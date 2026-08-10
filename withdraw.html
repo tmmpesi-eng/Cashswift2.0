@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdraw | CashSwift</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body { background-color: #121414; color: #ffffff; font-family: sans-serif; }
+    </style>
+</head>
+<body class="px-6 py-8">
+    <header class="flex items-center gap-4 mb-10">
+        <a href="index.html" class="material-icons text-zinc-400">arrow_back</a>
+        <h1 class="text-2xl font-bold">Withdraw Funds</h1>
+    </header>
+
+    <div class="space-y-8">
+        <div>
+            <label class="text-zinc-500 text-xs font-bold uppercase mb-3 block">Enter Amount (ZAR)</label>
+            <div class="bg-zinc-900 border border-white/10 rounded-2xl p-6 flex items-center gap-2">
+                <span class="text-2xl font-bold">R</span>
+                <input id="amount" type="number" placeholder="0.00" class="bg-transparent border-none text-2xl font-bold w-full outline-none text-white">
+            </div>
+            <p class="text-zinc-500 text-xs mt-3">A flat 4% administration fee applies.</p>
+        </div>
+        <button id="btn" class="w-full bg-[#ffcc00] text-black font-black py-5 rounded-2xl shadow-xl active:scale-95 transition-transform">
+            Confirm Withdrawal
+        </button>
+    </div>
+
+    <script>
+        const API_URL = "https://sheetdb.io/api/v1/YOUR_API_ID"; // REPLACE WITH YOUR LINK
+        document.getElementById('btn').onclick = async () => {
+            const val = document.getElementById('amount').value;
+            if(!val) return alert("Enter amount");
+            const btn = document.getElementById('btn');
+            btn.innerText = "Processing...";
+            btn.disabled = true;
+
+            const payload = {
+                "Timestamp": new Date().toLocaleString(),
+                "Employee ID": "CS-001",
+                "Amount (ZAR)": val,
+                "Fee (4%)": (val * 0.04).toFixed(2),
+                "Status": "PENDING"
+            };
+
+            try {
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ data: [payload] })
+                });
+                if (res.ok) window.location.href = "success.html";
+            } catch (e) { alert("Error"); btn.innerText = "Confirm Withdrawal"; btn.disabled = false; }
+        }
+    </script>
+</body>
+</html>
