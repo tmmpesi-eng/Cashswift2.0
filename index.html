@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | CashSwift</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body { background-color: #121414; color: #ffffff; font-family: sans-serif; }
+        .gradient-card { background: linear-gradient(145deg, #1b1c1c, #0d0e0f); }
+    </style>
+</head>
+<body class="px-6 py-8 pb-24">
+    <div class="flex justify-between items-center mb-10">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
+                <span class="text-[#ffcc00] font-bold">C</span>
+            </div>
+            <h1 class="text-xl font-bold tracking-tight">CashSwift</h1>
+        </div>
+        <span class="material-icons text-zinc-400">notifications</span>
+    </div>
+
+    <div class="gradient-card rounded-3xl p-8 border border-white/5 mb-8 relative overflow-hidden">
+        <p class="text-zinc-500 text-xs uppercase tracking-widest mb-2">Available Balance</p>
+        <p id="balance" class="text-4xl font-black text-[#fce4a8]">R 0.00</p>
+        <div class="mt-6 flex justify-between items-center">
+            <p class="text-zinc-500 text-xs">Limit: R 5,000.00 Max</p>
+        </div>
+    </div>
+
+    <a href="withdraw.html" class="block w-full bg-[#ffcc00] text-black text-center font-black py-5 rounded-2xl shadow-xl active:scale-95 transition-transform mb-12">
+        Withdraw Now
+    </a>
+
+    <h2 class="text-lg font-bold mb-4">Recent Activity</h2>
+    <div class="space-y-4">
+        <div class="flex items-center justify-between p-4 bg-zinc-900/50 rounded-2xl border border-white/5">
+            <div class="flex items-center gap-4">
+                <span class="material-icons text-[#ffcc00]">south_west</span>
+                <div>
+                    <p class="font-bold">Shift Completed</p>
+                    <p class="text-xs text-zinc-500">Today, 14:30</p>
+                </div>
+            </div>
+            <p class="font-bold text-green-400">+ R 850.00</p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "https://sheetdb.io/api/v1/YOUR_API_ID"; // REPLACE WITH YOUR LINK
+        async function loadData() {
+            try {
+                const res = await fetch(`${API_URL}?Employee_ID=CS-001`);
+                const data = await res.json();
+                if (data.length > 0) {
+                    document.getElementById('balance').innerText = `R ${data[0]['Available Balance (ZAR)']}`;
+                }
+            } catch (e) { console.error(e); }
+        }
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>
